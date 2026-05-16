@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie English Survival</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧟</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen active">
+        <div class="start-inner">
+            <div class="start-skull">☣</div>
+            <h1 class="start-title">ZOMBIE<br>ENGLISH<br>SURVIVAL</h1>
+            <p class="start-sub">The world has ended. Only your English knowledge can save you.</p>
+            <button id="start-btn">⚔ START SURVIVING</button>
+            <div class="start-hints">
+                <span>✅ Correct answer → Attack the zombie</span>
+                <span>❌ Wrong answer → Zombie attacks you</span>
+                <span>🪙 Collect coins → Buy upgrades</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen">
+
+        <!-- HUD -->
+        <header class="hud">
+            <span class="hud-logo">☣ ZES</span>
+            <div class="hud-stats">
+                <div class="chip chip-lv">LVL <span id="level">1</span></div>
+                <div class="chip chip-sc">⭐ <span id="score">0</span></div>
+                <div class="chip chip-co">🪙 <span id="coins">0</span></div>
+                <div class="chip chip-atk">⚔ <span id="damage-display">25</span> ATK</div>
+            </div>
+            <div class="exp-wrap">
+                <div class="exp-bar" id="exp-bar"></div>
+            </div>
+            <div class="exp-label">EXP: <span id="exp">0</span> / <span id="exp-max">100</span></div>
+        </header>
+
+        <!-- BATTLE AREA -->
+        <section class="battle-area">
+
+            <!-- Player -->
+            <div class="combatant player-side">
+                <div class="fighter-emoji" id="player-char">🧍</div>
+                <div class="combatant-name player-name">SURVIVOR</div>
+                <div class="hp-bar-wrap">
+                    <div class="hp-fill" id="player-health"></div>
+                </div>
+                <div class="hp-text">HP <span id="player-hp">100</span>/<span id="player-max-hp">100</span></div>
+            </div>
+
+            <!-- Center -->
+            <div class="battle-center">
+                <div class="vs-badge">VS</div>
+                <div class="battle-msg" id="battle-message">A wild zombie appears!</div>
+            </div>
+
+            <!-- Zombie -->
+            <div class="combatant zombie-side">
+                <div class="fighter-emoji" id="zombie-character">🧟</div>
+                <div class="combatant-name zombie-name" id="zombie-name">WALKER</div>
+                <div class="hp-bar-wrap">
+                    <div class="hp-fill" id="zombie-health"></div>
+                </div>
+                <div class="hp-text">HP <span id="zombie-hp">100</span>/<span id="zombie-max-hp">100</span></div>
+            </div>
+
+        </section>
+
+        <!-- QUIZ AREA -->
+        <section class="quiz-area">
+            <div class="quiz-meta">
+                <span class="quiz-type-badge" id="question-type">VOCABULARY</span>
+                <span class="streak-badge hidden" id="streak-badge">🔥 COMBO x0</span>
+            </div>
+            <div class="quiz-question" id="question">Loading question...</div>
+            <div class="answers-grid" id="answers"></div>
+        </section>
+
+        <!-- SHOP -->
+        <section class="shop-area">
+            <div class="shop-title">🛒 SURVIVOR SHOP</div>
+            <div class="shop-grid">
+                <button class="shop-btn" onclick="buyUpgrade('damage')">
+                    <span class="shop-icon">🔪</span>
+                    <span class="shop-label">Sharpen Weapon</span>
+                    <span class="shop-desc">+15 Attack</span>
+                    <span class="shop-cost">🪙 50</span>
+                </button>
+                <button class="shop-btn" onclick="buyUpgrade('health')">
+                    <span class="shop-icon">💉</span>
+                    <span class="shop-label">Medical Kit</span>
+                    <span class="shop-desc">+30 Max HP</span>
+                    <span class="shop-cost">🪙 50</span>
+                </button>
+                <button class="shop-btn" onclick="buyUpgrade('heal')">
+                    <span class="shop-icon">❤️</span>
+                    <span class="shop-label">Restore HP</span>
+                    <span class="shop-desc">Fully restore HP</span>
+                    <span class="shop-cost">🪙 80</span>
+                </button>
+                <button class="shop-btn" onclick="buyUpgrade('shield')">
+                    <span class="shop-icon">🛡️</span>
+                    <span class="shop-label">Body Armor</span>
+                    <span class="shop-desc">-5 damage received</span>
+                    <span class="shop-cost">🪙 100</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- BATTLE LOG -->
+        <section class="battle-log">
+            <div class="log-title">▶ BATTLE LOG</div>
+            <div id="log-entries"></div>
+        </section>
+
+    </div>
+
+    <!-- DEAD SCREEN -->
+    <div id="dead-screen" class="screen">
+        <div class="over-inner">
+            <div class="over-title dead-title">💀 YOU DIED 💀</div>
+            <div class="over-stats" id="dead-stats"></div>
+            <button id="retry-btn">🔄 TRY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- WIN SCREEN -->
+    <div id="win-screen" class="screen">
+        <div class="over-inner">
+            <div class="over-title win-title">🏆 YOU SURVIVED 🏆</div>
+            <div class="over-stats" id="win-stats"></div>
+            <button id="win-retry-btn">🔄 PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
